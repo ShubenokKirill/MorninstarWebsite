@@ -28,7 +28,7 @@ $stmt_password = $conn->prepare($sql_password);
             <input type="text" name="surname" id="surname" required>
             <label for="email">Email:</label>
             <input type="text" name="email" id="email" required>
-            <label for="password">Password:</label>
+            <label for="password">Password: (Write at least 8 letters)</label>
             <input type="password" name="password" id="password" required>
             <label for="password_2">Repeat password:</label>
             <input type="password" name="password_2" id="password_2" required>
