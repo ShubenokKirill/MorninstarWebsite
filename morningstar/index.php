@@ -8,14 +8,27 @@ if (!isset($_SESSION['login'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["username"]) && isset($_POST["password"])) {
     $username = htmlspecialchars($_POST["username"]);
     $password = htmlspecialchars($_POST["password"]);
-    $stmt = $conn->prepare("SELECT username, password FROM login_data WHERE username = :username");
-    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    try{
+
+        $stmt = $conn->prepare("SELECT username, password FROM login_data WHERE username = :username");
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $stmt_user_data = $conn->prepare("SELECT * FROM user_data WHERE username = :username");
+        $stmt_user_data->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt_user_data->execute();
+
+        $result_user_data = $stmt_user_data->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }catch(PDOException $e) {
+        echo "<p class='error-message'>Querry failed:" . $e->getMessage()."</p>" ;
+        exit();
+    }
     if ($result){
         if ($result['username'] == $username && $result['password'] == $password) {
             $_SESSION['login'] = true;
             $_SESSION['username'] = $username;
+            $_SESSION['user_data'] =  $result_user_data;
             header("location: index.php");
             exit();
         } else {
@@ -44,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["username"]) && isset($
     <main>
         <?php
         if ($_SESSION['login']) {
-            echo '<p>Welcome! You are logged in, '. $_SESSION['username'] .'.</p>';
+            echo '<p>Welcome! You are logged in, '. $_SESSION['username'] .": " . $_SESSION['user_data']['role'] .'.</p>';
             if (in_array(sha1($_SESSION['username']), $need) && (file_exists('src/connect/config2.ini')) || file_exists('src/connect/config2.mp4')) {
                 if (file_exists('src/connect/config2.ini')) {
                     rename("src/connect/config2.ini", 'src/connect/config2.mp4');
