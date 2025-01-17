@@ -6,7 +6,8 @@
 -- Generation Time: Jan 17, 2025 at 12:47 PM
 -- Server version: 11.6.2-MariaDB-ubu2404
 -- PHP Version: 8.2.27
-
+CREATE DATABASE IF NOT EXISTS morningstar DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_uca1400_ai_ci;
+USE morningstar;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
