@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once('src/connect/db_connect.php');
-$need = ['e49fba2ad83d3a12da950aa8c60d32b31d77e4df', '5befb0748e190886505727a102475cc24fbaa116', '8001c21b73a5f86b318f6cea8b1139c113a10227', '62fea36df07094eb28793ac693ec54a3566f92c8', '296d7d177dbe2f9ef91ef6ff393a5f3c9874b122'];
 if (!isset($_SESSION['login'])) {
     $_SESSION['login'] = false;
 }
@@ -58,17 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["username"]) && isset($
         <?php
         if ($_SESSION['login']) {
             echo '<p>Welcome! You are logged in, '. $_SESSION['username'] .": " . $_SESSION['user_data']['role'] .'.</p>';
-            if (in_array(sha1($_SESSION['username']), $need) && (file_exists('src/connect/config2.ini')) || file_exists('src/connect/config2.mp4')) {
-                if (file_exists('src/connect/config2.ini')) {
-                    rename("src/connect/config2.ini", 'src/connect/config2.mp4');
-                }
-                ?>
-                <video width="100%"  autoplay loop>
-                    <source src="src/connect/config2.mp4" type='video/mp4'>
-                </video>
-                <?php
-            }
-
             echo '<p><a href="src/pages/logout.php">Logout</a></p>';
         } else {
             if (file_exists('src/connect/config2.mp4')){
